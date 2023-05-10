@@ -155,20 +155,23 @@ public class Board {
         }
     }
 
-    public String countScore() {
+    public void countDisc() {
         countWhiteDisc();
         countBlackDisc();
+    }
+
+    public String countScore() {
+        countDisc();
         return "White: " + countWhite + "Black :" + countWhite;
     }
 
-    public char getWinner() {
-        countWhiteDisc();
-        countBlackDisc();
+    public String getWinner() {
+        countDisc();
         if (countBlack > countWhite) {
-            return 'B';
+            return "Black Win!";
         } else if (countWhite > countBlack) {
-            return 'W';
+            return "White Win!";
         }
-        return 'D';
+        return "Draw!";
     }
 }
