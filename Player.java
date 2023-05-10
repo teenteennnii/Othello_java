@@ -9,7 +9,33 @@ public class Player {
         return color;
     }
 
-    public void makeMove(Board board) {
-        // Prompt the player to make a move and make it on the board
+    public char getOpponentColor() {
+        if (this.getColor() == 'W') {
+            return 'B';
+        }
+        if (this.getColor() == 'B') {
+            return 'W';
+        }
+        return ' ';
+    }
+
+    public boolean makeMove(Board board, int row, int col) {
+        if (board.isValidMove(row, col, color)) {
+            board.flipDisc(row, col, color);
+            return true;
+        }
+        return false;
+    }
+
+    public class WhitePlayer extends Player {
+        public WhitePlayer() {
+            super('W');
+        }
+    }
+
+    public class BlackPlayer extends Player {
+        public BlackPlayer() {
+            super('B');
+        }
     }
 }
