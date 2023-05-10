@@ -162,7 +162,7 @@ public class Board {
 
     public String countScore() {
         countDisc();
-        return "White: " + countWhite + "Black :" + countWhite;
+        return "White: " + countWhite + "\t" + "Black: " + countWhite;
     }
 
     public String getWinner() {
@@ -174,4 +174,10 @@ public class Board {
         }
         return "Draw!";
     }
+
+    public static void main(String[] args) {
+        Board b1 = new Board();
+        System.out.println(b1.countScore());
+    }
 }
+
