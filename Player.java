@@ -23,6 +23,7 @@ public class Player {
 
     public boolean makeMove(Board board, int row, int col) {
         if (board.isValidMove(row, col, color)) {
+            board.addDisc(row, col, color);
             board.flipDisc(row, col, color);
             return true;
         }

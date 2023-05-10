@@ -225,6 +225,15 @@ public class Board {
         }
     }
 
+    public void addDisc(int row, int col, char player) {
+        if (player == 'W') {
+            cells[row][col].makeWhite();
+        }
+        if (player == 'B') {
+            cells[row][col].makeBlack();
+        }
+    }
+
     public void countWhiteDisc() {
         countWhite = 0;
         for(int row = 0; row < size; row++) {
