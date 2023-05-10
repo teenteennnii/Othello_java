@@ -8,7 +8,8 @@ public class Game extends JFrame {
     private Player player1;
     private Player player2;
     private Player currentPlayer;
-
+    private int counter = 0;
+    private boolean white = true;
 
     public Game() {
         board = new Board();
@@ -45,6 +46,7 @@ public class Game extends JFrame {
         new Game();
     }
 
+
     class GridUI extends JPanel {
         private int size = 8;
         private Image imageBlack;
@@ -54,7 +56,37 @@ public class Game extends JFrame {
             imageBlack = new ImageIcon("imgs/othelloblack2.png").getImage();
             imageWhite = new ImageIcon("imgs/othellowhite2.png").getImage();
             setPreferredSize(new Dimension(600, 600));
+            addMouseListener(new MouseAdapter() {
+                @Override
+                public void mousePressed(MouseEvent e) {
+                    super.mousePressed(e);
+                    int row = e.getY() / 50;
+                    int col = e.getX() / 50;
+                    System.out.println("Clicked on row: " + row + ", col: " + col);
+                    System.out.println("white" + white);
 
+                    if (white) {
+                        if (board.isValidMove(row, col, player2.getColor())) {
+
+                            player2.makeMove(board, row, col);
+                            counter++;
+                            white =false;
+                        }
+                    } else {
+                        if (board.isValidMove(row, col, player1.getColor())) {
+
+                            player1.makeMove(board, row, col);
+                            counter++;
+                            white = true;
+
+                        }
+                    }
+                    repaint();
+
+                }
+
+
+            });
         }
 
         @Override
@@ -63,21 +95,7 @@ public class Game extends JFrame {
             setBackground(new Color(53, 101, 77));
             paintboard(g);
             paintdisc(g);
-            addMouseListener(new MouseAdapter() {
-                @Override
-                public void mousePressed(MouseEvent e) {
-                    super.mousePressed(e);
-                    int row = e.getY() / 50;
-                    int col = e.getX() / 50;
-                    System.out.println("Clicked on row: " + row + ", col: " + col);
-                    board.flipDisc(row, col, 'B');
-                    g.drawImage(imageBlack, col * 50, row * 50, 50, 50, null, null);
-                    board.makebla(row, col);
-                    repaint();
 
-                }
-
-            });
         }
 
         private void paintboard(Graphics g) {
@@ -96,10 +114,11 @@ public class Game extends JFrame {
                     } else if (board.getColor(row, col) == 'B') {
                         g.drawImage(imageBlack, col * 50, row * 50, 50, 50, null, null);
                     } else {
-                        System.out.println("getimage=" + board.getColor(row, col));
+//                        System.out.println("getimage=" + board.getColor(row, col));
                     }
                 }
             }
         }
     }
 }
+
