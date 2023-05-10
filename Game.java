@@ -1,6 +1,7 @@
 import javax.swing.*;
 import java.awt.*;
-import java.util.Scanner;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class Game extends JFrame {
     private Board board;
@@ -23,7 +24,6 @@ public class Game extends JFrame {
     }
 
 
-
 //    public void play() {
 //        Scanner scanner = new Scanner(System.in);
 //
@@ -41,6 +41,9 @@ public class Game extends JFrame {
 //        System.out.println("Game over! The winner is " + board.getWinner());
 //    }
 
+    public static void main(String[] args) {
+        new Game();
+    }
 
     class GridUI extends JPanel {
         private int size = 8;
@@ -48,11 +51,10 @@ public class Game extends JFrame {
         private Image imageWhite;
 
         public GridUI() {
-            imageBlack=new ImageIcon("imgs/othelloblack2.png").getImage();
-            imageWhite=new ImageIcon("imgs/othellowhite2.png").getImage();
-
+            imageBlack = new ImageIcon("imgs/othelloblack2.png").getImage();
+            imageWhite = new ImageIcon("imgs/othellowhite2.png").getImage();
             setPreferredSize(new Dimension(600, 600));
-            repaint();
+
         }
 
         @Override
@@ -61,14 +63,27 @@ public class Game extends JFrame {
             setBackground(new Color(53, 101, 77));
             paintboard(g);
             paintdisc(g);
+            addMouseListener(new MouseAdapter() {
+                @Override
+                public void mousePressed(MouseEvent e) {
+                    super.mousePressed(e);
+                    int row = e.getY() / 50;
+                    int col = e.getX() / 50;
+                    System.out.println("Clicked on row: " + row + ", col: " + col);
+                    board.flipDisc(row, col, 'B');
+                    g.drawImage(imageBlack, col * 50, row * 50, 50, 50, null, null);
+                    board.makebla(row, col);
+                    repaint();
 
+                }
+
+            });
         }
 
         private void paintboard(Graphics g) {
             for (int row = 0; row < size; row++) {
                 for (int col = 0; col < size; col++) {
                     g.drawRect(50 * col, 50 * row, 50, 50);
-
                 }
             }
         }
@@ -76,20 +91,15 @@ public class Game extends JFrame {
         private void paintdisc(Graphics g) {
             for (int row = 0; row < size; row++) {
                 for (int col = 0; col < size; col++) {
-                    if (board.getColor(row,col)=='W'){
-                        g.drawImage(imageWhite, col*50, row*50, 50,50, null, null);
-                    } else if (board.getColor(row,col)=='B') {
-                        g.drawImage(imageBlack, col* 50, row * 50, 50, 50, null, null);
-                    }
-                    else {
-                        System.out.println("getimage="+board.getColor(row,col));
+                    if (board.getColor(row, col) == 'W') {
+                        g.drawImage(imageWhite, col * 50, row * 50, 50, 50, null, null);
+                    } else if (board.getColor(row, col) == 'B') {
+                        g.drawImage(imageBlack, col * 50, row * 50, 50, 50, null, null);
+                    } else {
+                        System.out.println("getimage=" + board.getColor(row, col));
                     }
                 }
             }
         }
-    }
-
-    public static void main(String[] args) {
-        new Game();
     }
 }
