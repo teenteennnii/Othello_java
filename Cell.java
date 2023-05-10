@@ -1,18 +1,5 @@
 public class Cell {
-    private boolean token;
-    private char discColor;
-
-    public Cell() {
-        token = false;
-    }
-
-    public boolean hasDisc() {
-        return token;
-    }
-
-    public void addToken() {
-        this.token = true;
-    }
+    private char discColor = ' ';
 
     public void makeWhite() {
         this.discColor = 'W';
@@ -24,5 +11,14 @@ public class Cell {
 
     public char getDiscColor() {
         return discColor;
+    }
+
+    public void flipColor() {
+        if (this.getDiscColor() == 'W') {
+            this.discColor = 'B';
+        }
+        if (this.getDiscColor() == 'B') {
+            this.discColor = 'W';
+        }
     }
 }
