@@ -2,7 +2,6 @@ public class Board {
     private char[][] board = new char[8][8];
 
     public Board() {
-        // Initialize the board to its starting position
         board[3][3] = 'W';
         board[4][4] = 'W';
         board[3][4] = 'B';
