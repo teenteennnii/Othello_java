@@ -35,7 +35,7 @@ public class Board {
             return false;
         }
         // Check if the specified position is empty
-        if (cells[row][col].getDiscColor() == ' ') {
+        if (cells[row][col].getDiscColor() != ' ') {
             return false;
         }
         // Check if the move is adjacent to an opponent's disc
