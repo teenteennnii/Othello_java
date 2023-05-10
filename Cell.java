@@ -25,4 +25,7 @@ public class Cell {
     public char getDiscColor() {
         return discColor;
     }
+    public void flipColor(){
+
+    }
 }
