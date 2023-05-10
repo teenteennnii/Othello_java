@@ -35,7 +35,7 @@ public class Board {
             return false;
         }
         // Check if the specified position is empty
-        if (cells[row][col].getDiscColor() == ' ') {
+        if (cells[row][col].getDiscColor() != ' ') {
             return false;
         }
         // Check if the move is adjacent to an opponent's disc
@@ -133,6 +133,98 @@ public class Board {
         return false;
     }
 
+    public void flipDisc(int row, int col, char player) {
+        char opponentColor = (player == 'W') ? 'B' : 'W';
+
+        // Flip horizontally
+        for (int i = col - 1; i >= 0; i--) {
+            if (cells[row][i].getDiscColor() == player) {
+                for (int j = i + 1; j < col; j++) {
+                    cells[row][j].flipColor();
+                }
+                break;
+            } else if (cells[row][i].getDiscColor() == ' ') {
+                break;
+            }
+        }
+        for (int i = col + 1; i < size; i++) {
+            if (cells[row][i].getDiscColor() == player) {
+                for (int j = i - 1; j > col; j--) {
+                    cells[row][j].flipColor();
+                }
+                break;
+            } else if (cells[row][i].getDiscColor() == ' ') {
+                break;
+            }
+        }
+
+        // Flip vertically
+        for (int i = row - 1; i >= 0; i--) {
+            if (cells[i][col].getDiscColor() == player) {
+                for (int j = i + 1; j < row; j++) {
+                    cells[j][col].flipColor();
+                }
+                break;
+            } else if (cells[i][col].getDiscColor() == ' ') {
+                break;
+            }
+        }
+        for (int i = row + 1; i < size; i++) {
+            if (cells[i][col].getDiscColor() == player) {
+                for (int j = i - 1; j > row; j--) {
+                    cells[j][col].flipColor();
+                }
+                break;
+            } else if (cells[i][col].getDiscColor() == ' ') {
+                break;
+            }
+        }
+
+        // Flip diagonally (top-left to bottom-right)
+        for (int i = row - 1, j = col - 1; i >= 0 && j >= 0; i--, j--) {
+            if (cells[i][j].getDiscColor() == player) {
+                for (int k = i + 1, l = j + 1; k < row && l < col; k++, l++) {
+                    cells[k][l].flipColor();
+                }
+                break;
+            } else if (cells[i][j].getDiscColor() == ' ') {
+                break;
+            }
+        }
+        for (int i = row + 1, j = col + 1; i < size && j < size; i++, j++) {
+            if (cells[i][j].getDiscColor() == player) {
+                for (int k = i - 1, l = j - 1; k > row && l > col; k--, l--) {
+                    cells[k][l].flipColor();
+                }
+                break;
+            } else if (cells[i][j].getDiscColor() == ' ') {
+                break;
+            }
+        }
+
+        // Flip diagonally (top-right to bottom-left)
+        for (int i = row - 1, j = col + 1; i >= 0 && j < size; i--, j++) {
+            if (cells[i][j].getDiscColor() == player) {
+                for (int k = i + 1, l = j - 1; k < row && l > col; k++, l--) {
+                    cells[k][l].flipColor();
+                }
+                break;
+            } else if (cells[i][j].getDiscColor() == ' ') {
+                break;
+            }
+        }
+        for (int i = row + 1, j = col - 1; i < size && j >= 0; i++, j--) {
+            if (cells[i][j].getDiscColor() == player) {
+                for (int k = i - 1, l = j + 1; k > row && l < col; k--, l++) {
+                    cells[k][l].flipColor();
+                }
+                break;
+            } else if (cells[i][j].getDiscColor() == ' ') {
+                break;
+            }
+        }
+    }
+
     public void countWhiteDisc() {
         countWhite = 0;
         for(int row = 0; row < size; row++) {
@@ -148,7 +240,7 @@ public class Board {
         countBlack = 0;
         for(int row = 0; row < size; row++) {
             for(int col = 0; col < size; col++) {
-                if(getColor(row, col) == 'W'){
+                if(getColor(row, col) == 'B'){
                     countBlack += 1;
                 }
             }
@@ -162,7 +254,7 @@ public class Board {
 
     public String countScore() {
         countDisc();
-        return "White: " + countWhite + "\t" + "Black: " + countWhite;
+        return "White: " + countWhite + "\t" + "Black: " + countBlack;
     }
 
     public String getWinner() {
@@ -182,10 +274,5 @@ public class Board {
 //            }
 //        }
 //    }
-
-    public static void main(String[] args) {
-        Board b1 = new Board();
-        System.out.println(b1.isValidMove(4, 6, 'W'));
-    }
 }
 
