@@ -257,6 +257,10 @@ public class Board {
         return "White: " + countWhite + "\t" + "Black: " + countBlack;
     }
 
+    public int getSize() {
+        return size;
+    }
+
     public String getWinner() {
         countDisc();
         if (countBlack > countWhite) {
