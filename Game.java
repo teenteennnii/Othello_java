@@ -3,13 +3,14 @@ import java.awt.*;
 import java.util.Scanner;
 
 public class Game extends JFrame {
-    private Board board;
+//    private Board board;
     private Player player1;
     private Player player2;
     private Player currentPlayer;
 
+
     public Game() {
-        board = new Board();
+//        board = new Board();
         player1 = new Player('B');
         player2 = new Player('W');
         currentPlayer = player1;
@@ -27,44 +28,48 @@ public class Game extends JFrame {
 //        game.play();
     }
 
-    public void play() {
-        Scanner scanner = new Scanner(System.in);
-
-        while (!board.isGameOver()) {
-            board.printBoard();
-            currentPlayer.makeMove(board);
-
-            if (currentPlayer == player1) {
-                currentPlayer = player2;
-            } else {
-                currentPlayer = player1;
-            }
-        }
-
-        System.out.println("Game over! The winner is " + board.getWinner());
-    }
+//    public void play() {
+//        Scanner scanner = new Scanner(System.in);
+//
+//        while (!board.isGameOver()) {
+//            board.printBoard();
+//            currentPlayer.makeMove(board);
+//
+//            if (currentPlayer == player1) {
+//                currentPlayer = player2;
+//            } else {
+//                currentPlayer = player1;
+//            }
+//        }
+//
+//        System.out.println("Game over! The winner is " + board.getWinner());
+//    }
 
 }
 
     class GridUI extends JPanel {
+        private int size = 8;
+
         public GridUI() {
             setPreferredSize(new Dimension(600, 600));
-
+            repaint();
         }
 
         @Override
         public void paint(Graphics g) {
             super.paint(g);
             setBackground(new Color(53, 101, 77));
-            g.setColor(Color.black);
-            g.drawRect(50, 50, 50, 50);
-            g.drawRect(100, 50, 50, 50);
-            g.fillOval(50, 50, 50, 50);
-            g.setColor(Color.white);
-
-            g.fillOval(100, 50, 50, 50);
+            paintboard(g);
 
 
+        }
+        private void paintboard(Graphics g){
+            for(int row = 0; row < size; row++) {
+                for(int col = 0; col < size; col++) {
+                    g.drawRect(50*col, 50*row, 50, 50);
+
+                }
+            }
         }
     }
 
