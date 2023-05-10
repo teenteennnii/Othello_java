@@ -1,7 +1,8 @@
 public class Board {
-    private char[][] board = new char[8][8];
     private Cell [][] cells;
     private int size = 8;
+    private int countWhite = 0;
+    private int countBlack = 0;
 
     public Board() {
         initCells();
@@ -24,6 +25,10 @@ public class Board {
         cells[4][3].makeBlack();
     }
 
+    public char getColor(int row, int col) {
+        return cells[row][col].getDiscColor();
+    }
+
     public boolean isValidMove(int row, int col, char player) {
         // Check if the given move is valid for the given player
         return false;
@@ -33,13 +38,34 @@ public class Board {
         // Make the given move for the given player
     }
 
-    public boolean isGameOver() {
-        // Check if the game is over
-        return false;
+    public void countWhiteDisc() {
+        countWhite = 0;
+        for(int row = 0; row < size; row++) {
+            for(int col = 0; col < size; col++) {
+                if(getColor(row, col) == 'W'){
+                    countWhite += 1;
+                }
+            }
+        }
+    }
+
+    public void countBlackDisc() {
+        countBlack = 0;
+        for(int row = 0; row < size; row++) {
+            for(int col = 0; col < size; col++) {
+                if(getColor(row, col) == 'W'){
+                    countBlack += 1;
+                }
+            }
+        }
     }
 
     public char getWinner() {
-        // Determine the winner of the game
-        return 'W';
+        if (countBlack > countWhite) {
+            return 'B';
+        } else if (countWhite > countBlack) {
+            return 'W';
+        }
+        return 'D';
     }
 }
