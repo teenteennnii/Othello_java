@@ -28,7 +28,9 @@ public class Board {
     public char getColor(int row, int col) {
         return cells[row][col].getDiscColor();
     }
-
+    public void makebla(int row, int col){//maybe exist
+        cells[row][col].makeBlack();
+    }
     public boolean isValidMove(int row, int col, char player) {
         // Check if the given position is within the bounds of the game board
         if (row < 0 || row >= size || col < 0 || col >= size) {
