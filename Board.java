@@ -234,6 +234,29 @@ public class Board {
         }
     }
 
+    public boolean isGameOver() {
+        // Check if there are any valid moves for white
+        for (int row = 0; row < size; row++) {
+            for (int col = 0; col < size; col++) {
+                if (isValidMove(row, col, 'W')) {
+                    return false; // White has a valid move, game is not over
+                }
+            }
+        }
+
+        // Check if there are any valid moves for black
+        for (int row = 0; row < size; row++) {
+            for (int col = 0; col < size; col++) {
+                if (isValidMove(row, col, 'B')) {
+                    return false; // Black has a valid move, game is not over
+                }
+            }
+        }
+
+        // No valid moves for both white and black, game is over
+        return true;
+    }
+
     public void countWhiteDisc() {
         countWhite = 0;
         for(int row = 0; row < size; row++) {
