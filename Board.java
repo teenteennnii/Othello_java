@@ -225,6 +225,38 @@ public class Board {
         }
     }
 
+    public void addDisc(int row, int col, char player) {
+        if (player == 'W') {
+            cells[row][col].makeWhite();
+        }
+        if (player == 'B') {
+            cells[row][col].makeBlack();
+        }
+    }
+
+    public boolean isGameOver() {
+        // Check if there are any valid moves for white
+        for (int row = 0; row < size; row++) {
+            for (int col = 0; col < size; col++) {
+                if (isValidMove(row, col, 'W')) {
+                    return false; // White has a valid move, game is not over
+                }
+            }
+        }
+
+        // Check if there are any valid moves for black
+        for (int row = 0; row < size; row++) {
+            for (int col = 0; col < size; col++) {
+                if (isValidMove(row, col, 'B')) {
+                    return false; // Black has a valid move, game is not over
+                }
+            }
+        }
+
+        // No valid moves for both white and black, game is over
+        return true;
+    }
+
     public void countWhiteDisc() {
         countWhite = 0;
         for(int row = 0; row < size; row++) {
@@ -255,6 +287,10 @@ public class Board {
     public String countScore() {
         countDisc();
         return "White: " + countWhite + "\t" + "Black: " + countBlack;
+    }
+
+    public int getSize() {
+        return size;
     }
 
     public String getWinner() {
