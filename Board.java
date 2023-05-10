@@ -19,10 +19,10 @@ public class Board {
     }
 
     public void startDisc() {
-        cells[3][3].makeWhite();
         cells[4][4].makeWhite();
-        cells[3][4].makeBlack();
-        cells[4][3].makeBlack();
+        cells[5][5].makeWhite();
+        cells[5][4].makeBlack();
+        cells[4][5].makeBlack();
     }
 
     public char getColor(int row, int col) {
@@ -35,7 +35,7 @@ public class Board {
             return false;
         }
         // Check if the specified position is empty
-        if (cells[row][col].getDiscColor() != ' ') {
+        if (cells[row][col].getDiscColor() == ' ') {
             return false;
         }
         // Check if the move is adjacent to an opponent's disc
@@ -175,9 +175,17 @@ public class Board {
         return "Draw!";
     }
 
+//    public void checkMove() {
+//        for(int row = 0; row < size; row++) {
+//            for(int col = 0; col < size; col++) {
+//                System.out.println(isValidMove(row, col, 'W'));
+//            }
+//        }
+//    }
+
     public static void main(String[] args) {
         Board b1 = new Board();
-        System.out.println(b1.countScore());
+        System.out.println(b1.isValidMove(4, 6, 'W'));
     }
 }
 
