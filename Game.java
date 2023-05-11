@@ -8,6 +8,7 @@ public class Game extends JFrame {
     private Player playerBlack;
     private Player playerWhite;
     private JLabel countScoreLabel;
+    private String mode = "Player";
     public static final int CELL_SIZE = 50;
     private boolean whiteTurn = true;
 
@@ -43,7 +44,12 @@ public class Game extends JFrame {
                     int row = e.getY() / CELL_SIZE;
                     int col = e.getX() / CELL_SIZE;
 
-                    playWithPlayer(row, col);
+                    if (mode.equals("Player")){
+                        playWithPlayer(row, col);
+                    } else if (mode.equals("EASY")){
+                        playWithBotEASY(row, col);
+                    }
+
                 }
             });
         }
@@ -86,6 +92,10 @@ public class Game extends JFrame {
                             JOptionPane.WARNING_MESSAGE);
                 }
             }
+        }
+
+        public void playWithBotEASY(int row, int col) {
+
         }
 
         public String whoTurn() {
