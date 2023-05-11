@@ -23,7 +23,6 @@ public class Board{
         cells[4][4].makeWhite();
         cells[4][3].makeBlack();
         cells[3][4].makeBlack();
-        cells[2][3].makeBlack();
     }
 
     public char getColor(int row, int col) {
@@ -235,25 +234,28 @@ public class Board{
         }
     }
 
-    public boolean isGameOver() {
+    public boolean isGameOver(char player) {
         // Check if there are any valid moves for white
-        for (int row = 0; row < size; row++) {
-            for (int col = 0; col < size; col++) {
-                if (isValidMove(row, col, 'W')) {
-                    return false; // White has a valid move, game is not over
+        if (player == 'B'){
+            for (int row = 0; row < size; row++) {
+                for (int col = 0; col < size; col++) {
+                    if (isValidMove(row, col, 'W')) {
+                        return false; // White has a valid move, game is not over
+                    }
                 }
             }
         }
 
         // Check if there are any valid moves for black
-        for (int row = 0; row < size; row++) {
-            for (int col = 0; col < size; col++) {
-                if (isValidMove(row, col, 'B')) {
-                    return false; // Black has a valid move, game is not over
+        if (player == 'W') {
+            for (int row = 0; row < size; row++) {
+                for (int col = 0; col < size; col++) {
+                    if (isValidMove(row, col, 'B')) {
+                        return false; // Black has a valid move, game is not over
+                    }
                 }
             }
         }
-
         // No valid moves for both white and black, game is over
         return true;
     }

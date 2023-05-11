@@ -7,9 +7,7 @@ public class Game extends JFrame {
     private Board board;
     private Player playerBlack;
     private Player playerWhite;
-    private Player currentPlayer;
-    private int counter = 0;
-    private boolean white = true;
+    private boolean whiteTurn = true;
 
     public Game() {
         board = new Board();
@@ -44,29 +42,35 @@ public class Game extends JFrame {
                     int row = e.getY() / 50;
                     int col = e.getX() / 50;
                     System.out.println("Clicked on row: " + row + ", col: " + col);
-                    System.out.println("white" + white);
 
-                    if (white) {
+                    if (whiteTurn) {
                         if (board.isValidMove(row, col, playerWhite.getColor())) {
                             playerWhite.makeMove(board, row, col);
                             board.flipDisc(row, col, playerWhite.getColor());
-                            counter++;
-                            white =false;
+                            whiteTurn =false;
+                        }
+                        repaint();
+                        if(board.isGameOver(playerWhite.getColor())) {
+                            JOptionPane.showMessageDialog(Game.this,
+                                    "Congratulations",
+                                    board.getWinner(),
+                                    JOptionPane.WARNING_MESSAGE);
                         }
                     } else {
                         if (board.isValidMove(row, col, playerBlack.getColor())) {
                             playerBlack.makeMove(board, row, col);
-                            board.flipDisc(row, col, playerBlack.getOpponentColor());
-                            counter++;
-                            white = true;
-
+                            board.flipDisc(row, col, playerBlack.getColor());
+                            whiteTurn = true;
+                        }
+                        repaint();
+                        if(board.isGameOver(playerBlack.getColor())) {
+                            JOptionPane.showMessageDialog(Game.this,
+                                    "Congratulations",
+                                    board.getWinner(),
+                                    JOptionPane.WARNING_MESSAGE);
                         }
                     }
-                    repaint();
-
                 }
-
-
             });
         }
 
