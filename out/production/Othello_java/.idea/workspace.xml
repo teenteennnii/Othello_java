@@ -33,6 +33,11 @@
     &quot;last_opened_file_path&quot;: &quot;/Users/jitpanunopwijit/Documents/Soft spec design/design/Project/Othello&quot;
   }
 }</component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$" />
+    </key>
+  </component>
   <component name="RunManager" selected="Application.Game">
     <configuration name="Board" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="Board" />
