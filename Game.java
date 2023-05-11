@@ -55,7 +55,7 @@ public class Game extends JFrame {
         public GridUI() {
             imageBlack = new ImageIcon("imgs/othelloblack2.png").getImage();
             imageWhite = new ImageIcon("imgs/othellowhite2.png").getImage();
-            setPreferredSize(new Dimension(600, 600));
+            setPreferredSize(new Dimension(400, 400));
             addMouseListener(new MouseAdapter() {
                 @Override
                 public void mousePressed(MouseEvent e) {
