@@ -19,10 +19,11 @@ public class Board{
     }
 
     public void startDisc() {
+        cells[3][3].makeWhite();
         cells[4][4].makeWhite();
-        cells[5][5].makeWhite();
-        cells[5][4].makeBlack();
-        cells[4][5].makeBlack();
+        cells[4][3].makeBlack();
+        cells[3][4].makeBlack();
+        cells[2][3].makeBlack();
     }
 
     public char getColor(int row, int col) {
@@ -303,12 +304,5 @@ public class Board{
         return "Draw!";
     }
 
-//    public void checkMove() {
-//        for(int row = 0; row < size; row++) {
-//            for(int col = 0; col < size; col++) {
-//                System.out.println(isValidMove(row, col, 'W'));
-//            }
-//        }
-//    }
 }
 
