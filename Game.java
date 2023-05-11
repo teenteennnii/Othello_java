@@ -7,6 +7,8 @@ public class Game extends JFrame {
     private Board board;
     private Player playerBlack;
     private Player playerWhite;
+    private JLabel countScoreLabel;
+    public static final int CELL_SIZE = 50;
     private boolean whiteTurn = true;
 
     public Game() {
@@ -14,6 +16,10 @@ public class Game extends JFrame {
         playerBlack = new BlackPlayer();
         playerWhite = new WhitePlayer();
         GridUI gridUI = new GridUI();
+        countScoreLabel = new JLabel(board.countScore() + "                 " +
+                "Turn : White", JLabel.CENTER);
+        countScoreLabel.setPreferredSize(new Dimension(100, CELL_SIZE));
+        add(countScoreLabel, BorderLayout.NORTH);
         add(gridUI);
         pack();
         setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -39,8 +45,8 @@ public class Game extends JFrame {
                 @Override
                 public void mousePressed(MouseEvent e) {
                     super.mousePressed(e);
-                    int row = e.getY() / 50;
-                    int col = e.getX() / 50;
+                    int row = e.getY() / CELL_SIZE;
+                    int col = e.getX() / CELL_SIZE;
 
                     if (whiteTurn) {
                         if (board.isValidMove(row, col, playerWhite.getColor())) {
@@ -48,11 +54,12 @@ public class Game extends JFrame {
                             board.flipDisc(row, col, playerWhite.getColor());
                             whiteTurn =false;
                         }
+                        countScoreLabel.setText(board.countScore() + "                 " + whoTurn());
                         repaint();
                         if(board.isGameOver(playerWhite.getColor())) {
                             JOptionPane.showMessageDialog(Game.this,
-                                    "Congratulations",
                                     board.getWinner(),
+                                    "Congratulations",
                                     JOptionPane.WARNING_MESSAGE);
                         }
                     } else {
@@ -61,15 +68,15 @@ public class Game extends JFrame {
                             board.flipDisc(row, col, playerBlack.getColor());
                             whiteTurn = true;
                         }
+                        countScoreLabel.setText(board.countScore() + "                 " + whoTurn());
                         repaint();
                         if(board.isGameOver(playerBlack.getColor())) {
                             JOptionPane.showMessageDialog(Game.this,
-                                    "Congratulations",
                                     board.getWinner(),
+                                    "Congratulations",
                                     JOptionPane.WARNING_MESSAGE);
                         }
                     }
-                    System.out.println(whoTurn());
                 }
             });
         }
@@ -85,15 +92,15 @@ public class Game extends JFrame {
 
         public String whoTurn() {
             if (whiteTurn) {
-                return "White Turn";
+                return "Turn : White";
             }
-            return "Black Turn";
+            return "Turn : Black";
         }
 
         private void paintBoard(Graphics g) {
             for (int row = 0; row < size; row++) {
                 for (int col = 0; col < size; col++) {
-                    g.drawRect(50 * col, 50 * row, 50, 50);
+                    g.drawRect(CELL_SIZE * col, CELL_SIZE * row, CELL_SIZE, CELL_SIZE);
                 }
             }
         }
@@ -102,9 +109,11 @@ public class Game extends JFrame {
             for (int row = 0; row < size; row++) {
                 for (int col = 0; col < size; col++) {
                     if (board.getColor(row, col) == 'W') {
-                        g.drawImage(imageWhite, col * 50, row * 50, 50, 50, null, null);
+                        g.drawImage(imageWhite, col * CELL_SIZE, row * CELL_SIZE,
+                                CELL_SIZE, CELL_SIZE, null, null);
                     } else if (board.getColor(row, col) == 'B') {
-                        g.drawImage(imageBlack, col * 50, row * 50, 50, 50, null, null);
+                        g.drawImage(imageBlack, col * CELL_SIZE, row * CELL_SIZE,
+                                CELL_SIZE, CELL_SIZE, null, null);
                     }
                 }
             }

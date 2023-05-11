@@ -289,7 +289,7 @@ public class Board{
 
     public String countScore() {
         countDisc();
-        return "White: " + countWhite + "\t" + "Black: " + countBlack;
+        return "White: " + countWhite + "     " + "Black: " + countBlack;
     }
 
     public int getSize() {
