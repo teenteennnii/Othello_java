@@ -18,11 +18,11 @@ public class Board{
         }
     }
 
-    public void startDisc() {
+    public void startDisc() { //minus 1
+        cells[3][3].makeWhite();
         cells[4][4].makeWhite();
-        cells[5][5].makeWhite();
-        cells[5][4].makeBlack();
-        cells[4][5].makeBlack();
+        cells[4][3].makeBlack();
+        cells[3][4].makeBlack();
     }
 
     public char getColor(int row, int col) {
