@@ -1,4 +1,4 @@
-public class Board {
+public class Board{
     private Cell [][] cells;
     private int size = 8;
     private int countWhite = 0;
