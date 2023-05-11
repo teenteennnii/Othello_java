@@ -41,7 +41,6 @@ public class Game extends JFrame {
                     super.mousePressed(e);
                     int row = e.getY() / 50;
                     int col = e.getX() / 50;
-                    System.out.println("Clicked on row: " + row + ", col: " + col);
 
                     if (whiteTurn) {
                         if (board.isValidMove(row, col, playerWhite.getColor())) {
@@ -70,6 +69,7 @@ public class Game extends JFrame {
                                     JOptionPane.WARNING_MESSAGE);
                         }
                     }
+                    System.out.println(whoTurn());
                 }
             });
         }
@@ -78,12 +78,19 @@ public class Game extends JFrame {
         public void paint(Graphics g) {
             super.paint(g);
             setBackground(new Color(53, 101, 77));
-            paintboard(g);
-            paintdisc(g);
+            paintBoard(g);
+            paintDisc(g);
 
         }
 
-        private void paintboard(Graphics g) {
+        public String whoTurn() {
+            if (whiteTurn) {
+                return "White Turn";
+            }
+            return "Black Turn";
+        }
+
+        private void paintBoard(Graphics g) {
             for (int row = 0; row < size; row++) {
                 for (int col = 0; col < size; col++) {
                     g.drawRect(50 * col, 50 * row, 50, 50);
@@ -91,15 +98,13 @@ public class Game extends JFrame {
             }
         }
 
-        private void paintdisc(Graphics g) {
+        private void paintDisc(Graphics g) {
             for (int row = 0; row < size; row++) {
                 for (int col = 0; col < size; col++) {
                     if (board.getColor(row, col) == 'W') {
                         g.drawImage(imageWhite, col * 50, row * 50, 50, 50, null, null);
                     } else if (board.getColor(row, col) == 'B') {
                         g.drawImage(imageBlack, col * 50, row * 50, 50, 50, null, null);
-                    } else {
-//                        System.out.println("getimage=" + board.getColor(row, col));
                     }
                 }
             }
