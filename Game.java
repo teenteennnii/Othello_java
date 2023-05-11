@@ -27,11 +27,6 @@ public class Game extends JFrame {
 
     }
 
-    public static void main(String[] args) {
-        new Game();
-    }
-
-
     class GridUI extends JPanel {
         private int size = 8;
         private Image imageBlack;
@@ -48,35 +43,7 @@ public class Game extends JFrame {
                     int row = e.getY() / CELL_SIZE;
                     int col = e.getX() / CELL_SIZE;
 
-                    if (whiteTurn) {
-                        if (board.isValidMove(row, col, playerWhite.getColor())) {
-                            playerWhite.makeMove(board, row, col);
-                            board.flipDisc(row, col, playerWhite.getColor());
-                            whiteTurn =false;
-                        }
-                        countScoreLabel.setText(board.countScore() + "                 " + whoTurn());
-                        repaint();
-                        if(board.isGameOver(playerWhite.getColor())) {
-                            JOptionPane.showMessageDialog(Game.this,
-                                    board.getWinner(),
-                                    "Congratulations",
-                                    JOptionPane.WARNING_MESSAGE);
-                        }
-                    } else {
-                        if (board.isValidMove(row, col, playerBlack.getColor())) {
-                            playerBlack.makeMove(board, row, col);
-                            board.flipDisc(row, col, playerBlack.getColor());
-                            whiteTurn = true;
-                        }
-                        countScoreLabel.setText(board.countScore() + "                 " + whoTurn());
-                        repaint();
-                        if(board.isGameOver(playerBlack.getColor())) {
-                            JOptionPane.showMessageDialog(Game.this,
-                                    board.getWinner(),
-                                    "Congratulations",
-                                    JOptionPane.WARNING_MESSAGE);
-                        }
-                    }
+                    playWithPlayer(row, col);
                 }
             });
         }
@@ -87,7 +54,38 @@ public class Game extends JFrame {
             setBackground(new Color(53, 101, 77));
             paintBoard(g);
             paintDisc(g);
+        }
 
+        public void playWithPlayer(int row, int col) {
+            if (whiteTurn) {
+                if (board.isValidMove(row, col, playerWhite.getColor())) {
+                    playerWhite.makeMove(board, row, col);
+                    board.flipDisc(row, col, playerWhite.getColor());
+                    whiteTurn =false;
+                }
+                countScoreLabel.setText(board.countScore() + "                 " + whoTurn());
+                repaint();
+                if(board.isGameOver(playerWhite.getColor())) {
+                    JOptionPane.showMessageDialog(Game.this,
+                            board.getWinner(),
+                            "Congratulations",
+                            JOptionPane.WARNING_MESSAGE);
+                }
+            } else {
+                if (board.isValidMove(row, col, playerBlack.getColor())) {
+                    playerBlack.makeMove(board, row, col);
+                    board.flipDisc(row, col, playerBlack.getColor());
+                    whiteTurn = true;
+                }
+                countScoreLabel.setText(board.countScore() + "                 " + whoTurn());
+                repaint();
+                if(board.isGameOver(playerBlack.getColor())) {
+                    JOptionPane.showMessageDialog(Game.this,
+                            board.getWinner(),
+                            "Congratulations",
+                            JOptionPane.WARNING_MESSAGE);
+                }
+            }
         }
 
         public String whoTurn() {
