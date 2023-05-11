@@ -17,7 +17,7 @@ public class Cell {
         if (this.getDiscColor() == 'W') {
             this.discColor = 'B';
         }
-        if (this.getDiscColor() == 'B') {
+        else {
             this.discColor = 'W';
         }
     }
