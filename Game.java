@@ -9,12 +9,12 @@ public class Game extends JFrame {
     private Player player2;
     private Player currentPlayer;
     private int counter = 0;
-    private boolean white = true;
+    private boolean white = false;
 
     public Game() {
         board = new Board();
-        player1 = new Player('B');
-        player2 = new Player('W');
+        player1 = new BlackPlayer();
+        player2 = new WhitePlayer();
         currentPlayer = player1;
         GridUI gridUI = new GridUI();
         add(gridUI);
