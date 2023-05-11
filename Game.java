@@ -5,17 +5,16 @@ import java.awt.event.MouseEvent;
 
 public class Game extends JFrame {
     private Board board;
-    private Player player1;
-    private Player player2;
+    private Player playerBlack;
+    private Player playerWhite;
     private Player currentPlayer;
     private int counter = 0;
     private boolean white = true;
 
     public Game() {
         board = new Board();
-        player1 = new Player('B');
-        player2 = new Player('W');
-        currentPlayer = player1;
+        playerBlack = new BlackPlayer();
+        playerWhite = new WhitePlayer();
         GridUI gridUI = new GridUI();
         add(gridUI);
         pack();
@@ -23,24 +22,6 @@ public class Game extends JFrame {
         setVisible(true);
 
     }
-
-
-//    public void play() {
-//        Scanner scanner = new Scanner(System.in);
-//
-//        while (!board.isGameOver()) {
-//            board.printBoard();
-//            currentPlayer.makeMove(board);
-//
-//            if (currentPlayer == player1) {
-//                currentPlayer = player2;
-//            } else {
-//                currentPlayer = player1;
-//            }
-//        }
-//
-//        System.out.println("Game over! The winner is " + board.getWinner());
-//    }
 
     public static void main(String[] args) {
         new Game();
@@ -66,16 +47,16 @@ public class Game extends JFrame {
                     System.out.println("white" + white);
 
                     if (white) {
-                        if (board.isValidMove(row, col, player2.getColor())) {
-
-                            player2.makeMove(board, row, col);
+                        if (board.isValidMove(row, col, playerWhite.getColor())) {
+                            playerWhite.makeMove(board, row, col);
+                            board.flipDisc(row, col, playerWhite.getColor());
                             counter++;
                             white =false;
                         }
                     } else {
-                        if (board.isValidMove(row, col, player1.getColor())) {
-
-                            player1.makeMove(board, row, col);
+                        if (board.isValidMove(row, col, playerBlack.getColor())) {
+                            playerBlack.makeMove(board, row, col);
+                            board.flipDisc(row, col, playerBlack.getOpponentColor());
                             counter++;
                             white = true;
 
