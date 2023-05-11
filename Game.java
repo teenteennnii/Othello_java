@@ -5,47 +5,28 @@ import java.awt.event.MouseEvent;
 
 public class Game extends JFrame {
     private Board board;
-    private Player player1;
-    private Player player2;
-    private Player currentPlayer;
-    private int counter = 0;
-    private boolean white = false;
+    private Player playerBlack;
+    private Player playerWhite;
+    private JLabel countScoreLabel;
+    private String mode = "Player";
+    public static final int CELL_SIZE = 50;
+    private boolean whiteTurn = true;
 
     public Game() {
         board = new Board();
-        player1 = new BlackPlayer();
-        player2 = new WhitePlayer();
-        currentPlayer = player1;
+        playerBlack = new BlackPlayer();
+        playerWhite = new WhitePlayer();
         GridUI gridUI = new GridUI();
+        countScoreLabel = new JLabel(board.countScore() + "                 " +
+                "Turn : White", JLabel.CENTER);
+        countScoreLabel.setPreferredSize(new Dimension(100, CELL_SIZE));
+        add(countScoreLabel, BorderLayout.NORTH);
         add(gridUI);
         pack();
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setVisible(true);
 
     }
-
-
-//    public void play() {
-//        Scanner scanner = new Scanner(System.in);
-//
-//        while (!board.isGameOver()) {
-//            board.printBoard();
-//            currentPlayer.makeMove(board);
-//
-//            if (currentPlayer == player1) {
-//                currentPlayer = player2;
-//            } else {
-//                currentPlayer = player1;
-//            }
-//        }
-//
-//        System.out.println("Game over! The winner is " + board.getWinner());
-//    }
-
-    public static void main(String[] args) {
-        new Game();
-    }
-
 
     class GridUI extends JPanel {
         private int size = 8;
@@ -60,32 +41,16 @@ public class Game extends JFrame {
                 @Override
                 public void mousePressed(MouseEvent e) {
                     super.mousePressed(e);
-                    int row = e.getY() / 50;
-                    int col = e.getX() / 50;
-                    System.out.println("Clicked on row: " + row + ", col: " + col);
-                    System.out.println("white" + white);
+                    int row = e.getY() / CELL_SIZE;
+                    int col = e.getX() / CELL_SIZE;
 
-                    if (white) {
-                        if (board.isValidMove(row, col, player2.getColor())) {
-
-                            player2.makeMove(board, row, col);
-                            counter++;
-                            white =!white;
-                        }
-                    } else {
-                        if (board.isValidMove(row, col, player1.getColor())) {
-
-                            player1.makeMove(board, row, col);
-                            counter++;
-                            white = !white;
-
-                        }
+                    if (mode.equals("Player")){
+                        playWithPlayer(row, col);
+                    } else if (mode.equals("EASY")){
+                        playWithBotEASY(row, col);
                     }
-                    repaint();
 
                 }
-
-
             });
         }
 
@@ -93,28 +58,70 @@ public class Game extends JFrame {
         public void paint(Graphics g) {
             super.paint(g);
             setBackground(new Color(53, 101, 77));
-            paintboard(g);
-            paintdisc(g);
-
+            paintBoard(g);
+            paintDisc(g);
         }
 
-        private void paintboard(Graphics g) {
-            for (int row = 0; row < size; row++) {
-                for (int col = 0; col < size; col++) {
-                    g.drawRect(50 * col, 50 * row, 50, 50);
+        public void playWithPlayer(int row, int col) {
+            if (whiteTurn) {
+                if (board.isValidMove(row, col, playerWhite.getColor())) {
+                    playerWhite.makeMove(board, row, col);
+                    board.flipDisc(row, col, playerWhite.getColor());
+                    whiteTurn =false;
+                }
+                countScoreLabel.setText(board.countScore() + "                 " + whoTurn());
+                repaint();
+                if(board.isGameOver(playerWhite.getColor())) {
+                    JOptionPane.showMessageDialog(Game.this,
+                            board.getWinner(),
+                            "Congratulations",
+                            JOptionPane.WARNING_MESSAGE);
+                }
+            } else {
+                if (board.isValidMove(row, col, playerBlack.getColor())) {
+                    playerBlack.makeMove(board, row, col);
+                    board.flipDisc(row, col, playerBlack.getColor());
+                    whiteTurn = true;
+                }
+                countScoreLabel.setText(board.countScore() + "                 " + whoTurn());
+                repaint();
+                if(board.isGameOver(playerBlack.getColor())) {
+                    JOptionPane.showMessageDialog(Game.this,
+                            board.getWinner(),
+                            "Congratulations",
+                            JOptionPane.WARNING_MESSAGE);
                 }
             }
         }
 
-        private void paintdisc(Graphics g) {
+        public void playWithBotEASY(int row, int col) {
+
+        }
+
+        public String whoTurn() {
+            if (whiteTurn) {
+                return "Turn : White";
+            }
+            return "Turn : Black";
+        }
+
+        private void paintBoard(Graphics g) {
+            for (int row = 0; row < size; row++) {
+                for (int col = 0; col < size; col++) {
+                    g.drawRect(CELL_SIZE * col, CELL_SIZE * row, CELL_SIZE, CELL_SIZE);
+                }
+            }
+        }
+
+        private void paintDisc(Graphics g) {
             for (int row = 0; row < size; row++) {
                 for (int col = 0; col < size; col++) {
                     if (board.getColor(row, col) == 'W') {
-                        g.drawImage(imageWhite, col * 50, row * 50, 50, 50, null, null);
+                        g.drawImage(imageWhite, col * CELL_SIZE, row * CELL_SIZE,
+                                CELL_SIZE, CELL_SIZE, null, null);
                     } else if (board.getColor(row, col) == 'B') {
-                        g.drawImage(imageBlack, col * 50, row * 50, 50, 50, null, null);
-                    } else {
-//                        System.out.println("getimage=" + board.getColor(row, col));
+                        g.drawImage(imageBlack, col * CELL_SIZE, row * CELL_SIZE,
+                                CELL_SIZE, CELL_SIZE, null, null);
                     }
                 }
             }

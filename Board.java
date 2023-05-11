@@ -18,7 +18,7 @@ public class Board{
         }
     }
 
-    public void startDisc() { //minus 1
+    public void startDisc() {
         cells[3][3].makeWhite();
         cells[4][4].makeWhite();
         cells[4][3].makeBlack();
@@ -234,25 +234,28 @@ public class Board{
         }
     }
 
-    public boolean isGameOver() {
+    public boolean isGameOver(char player) {
         // Check if there are any valid moves for white
-        for (int row = 0; row < size; row++) {
-            for (int col = 0; col < size; col++) {
-                if (isValidMove(row, col, 'W')) {
-                    return false; // White has a valid move, game is not over
+        if (player == 'B'){
+            for (int row = 0; row < size; row++) {
+                for (int col = 0; col < size; col++) {
+                    if (isValidMove(row, col, 'W')) {
+                        return false; // White has a valid move, game is not over
+                    }
                 }
             }
         }
 
         // Check if there are any valid moves for black
-        for (int row = 0; row < size; row++) {
-            for (int col = 0; col < size; col++) {
-                if (isValidMove(row, col, 'B')) {
-                    return false; // Black has a valid move, game is not over
+        if (player == 'W') {
+            for (int row = 0; row < size; row++) {
+                for (int col = 0; col < size; col++) {
+                    if (isValidMove(row, col, 'B')) {
+                        return false; // Black has a valid move, game is not over
+                    }
                 }
             }
         }
-
         // No valid moves for both white and black, game is over
         return true;
     }
@@ -286,7 +289,7 @@ public class Board{
 
     public String countScore() {
         countDisc();
-        return "White: " + countWhite + "\t" + "Black: " + countBlack;
+        return "White: " + countWhite + "     " + "Black: " + countBlack;
     }
 
     public int getSize() {
@@ -303,12 +306,5 @@ public class Board{
         return "Draw!";
     }
 
-//    public void checkMove() {
-//        for(int row = 0; row < size; row++) {
-//            for(int col = 0; col < size; col++) {
-//                System.out.println(isValidMove(row, col, 'W'));
-//            }
-//        }
-//    }
 }
 
