@@ -70,14 +70,14 @@ public class Game extends JFrame {
 
                             player2.makeMove(board, row, col);
                             counter++;
-                            white =false;
+                            white =!white;
                         }
                     } else {
                         if (board.isValidMove(row, col, player1.getColor())) {
 
                             player1.makeMove(board, row, col);
                             counter++;
-                            white = true;
+                            white = !white;
 
                         }
                     }
