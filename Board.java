@@ -1,5 +1,9 @@
+import java.util.ArrayList;
+import java.util.List;
+
 public class Board{
     private Cell [][] cells;
+    private List<Observer> observers = new ArrayList<>();
     private int size = 8;
     private int countWhite = 0;
     private int countBlack = 0;
@@ -27,6 +31,20 @@ public class Board{
 
     public char getColor(int row, int col) {
         return cells[row][col].getDiscColor();
+    }
+
+    public void addObserver(Observer observer) {
+        observers.add(observer);
+    }
+
+    public void removeObserver(Observer observer) {
+        observers.remove(observer);
+    }
+
+    private void notifyObservers() {
+        for (Observer observer : observers) {
+            observer.update();
+        }
     }
 
     public boolean isValidMove(int row, int col, char player) {
@@ -223,6 +241,7 @@ public class Board{
                 break;
             }
         }
+        notifyObservers();
     }
 
     public void addDisc(int row, int col, char player) {
@@ -232,6 +251,7 @@ public class Board{
         if (player == 'B') {
             cells[row][col].makeBlack();
         }
+        notifyObservers();
     }
 
     public boolean isGameOver(char player) {
