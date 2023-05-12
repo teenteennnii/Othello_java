@@ -52,7 +52,7 @@ public class Game extends JFrame {
         setVisible(true);
     }
 
-    class GridUI extends JPanel {
+    class GridUI extends JPanel implements Observer {
         private int size = 8;
         private Image imageBlack;
         private Image imageWhite;
@@ -89,6 +89,7 @@ public class Game extends JFrame {
 
                 }
             });
+            board.addObserver(this);
         }
 
         @Override
@@ -149,6 +150,11 @@ public class Game extends JFrame {
                     printWinner();
                 }
             }
+        }
+
+        @Override
+        public void update() {
+            repaint();
         }
 
         public void printWinner() {
