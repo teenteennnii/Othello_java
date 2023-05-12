@@ -1,5 +1,3 @@
-import org.w3c.dom.events.Event;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -74,15 +72,21 @@ public class Game extends JFrame {
                     int row = e.getY() / CELL_SIZE;
                     int col = e.getX() / CELL_SIZE;
 
-                    if (mode.equals("Player")) {
-                        playWithPlayer(row, col);
-                    } else if (mode.equals("EASY")) {
-                        playWithBot(row, col, "EASY");
-                    } else if (mode.equals("MEDIUM")) {
-                        playWithBot(row, col, "MEDIUM");
-                    } else if (mode.equals("HARD")); {
-                        playWithBot(row, col, "HARD");
+                    switch (mode) {
+                        case "Player":
+                            playWithPlayer(row, col);
+                            break;
+                        case "EASY":
+                            playWithBot(row, col, "EASY");
+                            break;
+                        case "MEDIUM":
+                            playWithBot(row, col, "MEDIUM");
+                            break;
+                        case "HARD":
+                            playWithBot(row, col, "HARD");
+                            break;
                     }
+
                 }
             });
         }
