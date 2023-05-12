@@ -16,12 +16,11 @@ public class Game extends JFrame {
         board = new Board();
         playerBlack = new BlackPlayer();
         playerWhite = new WhitePlayer();
-        GridUI gridUI = new GridUI();
-        countScoreLabel = new JLabel(board.countScore() + "                 " +
-                "Turn : White", JLabel.CENTER);
+        countScoreLabel = new JLabel("", JLabel.CENTER);
         countScoreLabel.setPreferredSize(new Dimension(100, CELL_SIZE));
+        MenuUI menuUI = new MenuUI();
+        add(menuUI);
         add(countScoreLabel, BorderLayout.NORTH);
-        add(gridUI);
         pack();
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setVisible(true);
@@ -36,7 +35,11 @@ public class Game extends JFrame {
         public GridUI() {
             imageBlack = new ImageIcon("imgs/othelloblack2.png").getImage();
             imageWhite = new ImageIcon("imgs/othellowhite2.png").getImage();
+            setResizable(false);
             setPreferredSize(new Dimension(400, 400));
+            countScoreLabel.setText(board.countScore() + "                 " + whoTurn());
+            repaint();
+
             addMouseListener(new MouseAdapter() {
                 @Override
                 public void mousePressed(MouseEvent e) {
@@ -44,9 +47,9 @@ public class Game extends JFrame {
                     int row = e.getY() / CELL_SIZE;
                     int col = e.getX() / CELL_SIZE;
 
-                    if (mode.equals("Player")){
+                    if (mode.equals("Player")) {
                         playWithPlayer(row, col);
-                    } else if (mode.equals("EASY")){
+                    } else if (mode.equals("EASY")) {
                         playWithBotEASY(row, col);
                     }
 
@@ -67,11 +70,11 @@ public class Game extends JFrame {
                 if (board.isValidMove(row, col, playerWhite.getColor())) {
                     playerWhite.makeMove(board, row, col);
                     board.flipDisc(row, col, playerWhite.getColor());
-                    whiteTurn =false;
+                    whiteTurn = false;
                 }
                 countScoreLabel.setText(board.countScore() + "                 " + whoTurn());
                 repaint();
-                if(board.isGameOver(playerWhite.getColor())) {
+                if (board.isGameOver(playerWhite.getColor())) {
                     JOptionPane.showMessageDialog(Game.this,
                             board.getWinner(),
                             "Congratulations",
@@ -85,7 +88,7 @@ public class Game extends JFrame {
                 }
                 countScoreLabel.setText(board.countScore() + "                 " + whoTurn());
                 repaint();
-                if(board.isGameOver(playerBlack.getColor())) {
+                if (board.isGameOver(playerBlack.getColor())) {
                     JOptionPane.showMessageDialog(Game.this,
                             board.getWinner(),
                             "Congratulations",
@@ -127,5 +130,93 @@ public class Game extends JFrame {
             }
         }
     }
-}
 
+    class MenuUI extends JPanel {
+        private int width = 200;
+        private int height = 100;
+
+        public MenuUI() {
+            setPreferredSize(new Dimension(400, 400));
+            setResizable(false);
+            addMouseListener(new MouseAdapter() {
+                @Override
+                public void mousePressed(MouseEvent e) {
+                    super.mousePressed(e);
+                    int ycur = e.getY();
+                    int xcur = e.getX();
+
+
+                    if (xcur > 100 && xcur < 300 && ycur > 50 && ycur < 150) {
+                        MenuUI2 uinew = new MenuUI2();
+                        add(uinew);
+                        pack();
+                    } else if (xcur > 100 && xcur < 300 && ycur > 250 && ycur < 350) {
+                        GridUI uinew = new GridUI();
+                        add(uinew);
+                        pack();
+                    }
+                    repaint();
+                }
+            });
+        }
+
+        @Override
+        public void paint(Graphics g) {
+            super.paint(g);
+            setBackground(new Color(53, 101, 77));
+            paintselectplayer(g);
+        }
+
+        public void paintselectplayer(Graphics g) {
+            g.drawRect(100, 50, width, height);
+            g.drawRect(100, 250, width, height);
+            g.drawString("Vs Bot", 180, 100);
+            g.drawString("Vs Player", 180, 300);
+        }
+    }
+
+    class MenuUI2 extends JPanel {
+        private int width = 200;
+        private int height = 50;
+
+        public MenuUI2() {
+            setPreferredSize(new Dimension(400, 400));
+            setResizable(false);
+            addMouseListener(new MouseAdapter() {
+                @Override
+                public void mousePressed(MouseEvent e) {
+                    super.mousePressed(e);
+                    int ycur = e.getY();
+                    int xcur = e.getX();
+                    if (xcur > 100 && xcur < 300 && ycur > 50 && ycur < 100) {
+                        System.out.println("select easy bot");
+                    } else if (xcur > 100 && xcur < 300 && ycur > 150 && ycur  <200) {
+                        System.out.println("select medium bot");
+
+                    } else if (xcur > 100 && xcur < 300 && ycur > 250 && ycur < 300) {
+                        System.out.println("select hard bot");
+
+                    }
+                    repaint();
+                }
+            });
+        }
+
+        @Override
+        public void paint(Graphics g) {
+            super.paint(g);
+            setBackground(new Color(53, 101, 77));
+            paintSelectDiff(g);
+        }
+
+        public void paintSelectDiff(Graphics g) {
+            g.drawRect(100, 50, width, height);
+            g.drawRect(100, 150, width, height);
+            g.drawRect(100, 250, width, height);
+
+            g.drawString("Easy", 180, 75);
+            g.drawString("Medium", 180, 180);
+            g.drawString("Hard", 180, 280);
+        }
+    }
+}
