@@ -1,14 +1,16 @@
+import org.w3c.dom.events.Event;
+
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.awt.event.*;
 
 public class Game extends JFrame {
     private Board board;
     private Player playerBlack;
     private Player playerWhite;
     private JLabel countScoreLabel;
-    private String mode = "Player";
+    private JButton menuButton;
+    private JButton resetButton;
     public static final int CELL_SIZE = 50;
     private boolean whiteTurn = true;
 
@@ -19,12 +21,37 @@ public class Game extends JFrame {
         countScoreLabel = new JLabel("", JLabel.CENTER);
         countScoreLabel.setPreferredSize(new Dimension(100, CELL_SIZE));
         MenuUI menuUI = new MenuUI();
-        add(menuUI);
-        add(countScoreLabel, BorderLayout.NORTH);
+
+        menuButton = new JButton("Menu");
+        menuButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                menuUI.removeAll();
+                MenuUI menuUI = new MenuUI();
+                countScoreLabel.setText("");
+                repaint();
+            }
+        });
+
+        resetButton = new JButton("Reset");
+        resetButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                menuUI.removeAll();
+                board = new Board();
+                whiteTurn = true;
+                countScoreLabel.setText("");
+                repaint();
+            }
+        });
+
+        add(menuButton, BorderLayout.WEST);
+        add(countScoreLabel, BorderLayout.CENTER);
+        add(resetButton, BorderLayout.EAST);
+        add(menuUI, BorderLayout.SOUTH);
         pack();
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setVisible(true);
-
     }
 
     class GridUI extends JPanel {
@@ -32,12 +59,12 @@ public class Game extends JFrame {
         private Image imageBlack;
         private Image imageWhite;
 
-        public GridUI() {
+        public GridUI(String mode) {
             imageBlack = new ImageIcon("imgs/othelloblack2.png").getImage();
             imageWhite = new ImageIcon("imgs/othellowhite2.png").getImage();
             setResizable(false);
             setPreferredSize(new Dimension(400, 400));
-            countScoreLabel.setText(board.countScore() + "                 " + whoTurn());
+            countScoreLabel.setText(board.countScore() + "   " + whoTurn());
             repaint();
 
             addMouseListener(new MouseAdapter() {
@@ -50,7 +77,9 @@ public class Game extends JFrame {
                     if (mode.equals("Player")) {
                         playWithPlayer(row, col);
                     } else if (mode.equals("EASY")) {
-                        playWithBotEASY(row, col);
+                        playWithBot(row, col, "EASY");
+                    } else if (mode.equals("MEDIUM")) {
+                        playWithBot(row, col, "MEDIUM");
                     }
 
                 }
@@ -72,13 +101,10 @@ public class Game extends JFrame {
                     board.flipDisc(row, col, playerWhite.getColor());
                     whiteTurn = false;
                 }
-                countScoreLabel.setText(board.countScore() + "                 " + whoTurn());
+                countScoreLabel.setText(board.countScore() + "   " + whoTurn());
                 repaint();
                 if (board.isGameOver(playerWhite.getColor())) {
-                    JOptionPane.showMessageDialog(Game.this,
-                            board.getWinner(),
-                            "Congratulations",
-                            JOptionPane.WARNING_MESSAGE);
+                    printWinner();
                 }
             } else {
                 if (board.isValidMove(row, col, playerBlack.getColor())) {
@@ -86,19 +112,45 @@ public class Game extends JFrame {
                     board.flipDisc(row, col, playerBlack.getColor());
                     whiteTurn = true;
                 }
-                countScoreLabel.setText(board.countScore() + "                 " + whoTurn());
+                countScoreLabel.setText(board.countScore() + "   " + whoTurn());
                 repaint();
                 if (board.isGameOver(playerBlack.getColor())) {
-                    JOptionPane.showMessageDialog(Game.this,
-                            board.getWinner(),
-                            "Congratulations",
-                            JOptionPane.WARNING_MESSAGE);
+                    printWinner();
                 }
             }
         }
 
-        public void playWithBotEASY(int row, int col) {
+        public void playWithBot(int row, int col, String diff) {
+            BotPlayer bot = new BotPlayer('B', diff);
 
+            if (whiteTurn) {
+                if (board.isValidMove(row, col, playerWhite.getColor())) {
+                    playerWhite.makeMove(board, row, col);
+                    board.flipDisc(row, col, playerWhite.getColor());
+                    whiteTurn = false;
+                }
+                countScoreLabel.setText(board.countScore() + "   " + whoTurn());
+                repaint();
+                if (board.isGameOver(playerWhite.getColor())) {
+                    printWinner();
+                }
+            } else {
+                bot.makeMove(board);
+                whiteTurn = true;
+
+                countScoreLabel.setText(board.countScore() + "   " + whoTurn());
+                repaint();
+                if (board.isGameOver(playerBlack.getColor())) {
+                    printWinner();
+                }
+            }
+        }
+
+        public void printWinner() {
+            JOptionPane.showMessageDialog(Game.this,
+                    board.getWinner(),
+                    "Congratulations",
+                    JOptionPane.WARNING_MESSAGE);
         }
 
         public String whoTurn() {
@@ -151,7 +203,7 @@ public class Game extends JFrame {
                         add(uinew);
                         pack();
                     } else if (xcur > 100 && xcur < 300 && ycur > 250 && ycur < 350) {
-                        GridUI uinew = new GridUI();
+                        GridUI uinew = new GridUI("Player");
                         add(uinew);
                         pack();
                     }
@@ -164,10 +216,10 @@ public class Game extends JFrame {
         public void paint(Graphics g) {
             super.paint(g);
             setBackground(new Color(53, 101, 77));
-            paintselectplayer(g);
+            paintSelectPlayer(g);
         }
 
-        public void paintselectplayer(Graphics g) {
+        public void paintSelectPlayer(Graphics g) {
             g.drawRect(100, 50, width, height);
             g.drawRect(100, 250, width, height);
             g.drawString("Vs Bot", 180, 100);
@@ -189,13 +241,17 @@ public class Game extends JFrame {
                     int ycur = e.getY();
                     int xcur = e.getX();
                     if (xcur > 100 && xcur < 300 && ycur > 50 && ycur < 100) {
-                        System.out.println("select easy bot");
+                        GridUI uinew = new GridUI("EASY");
+                        add(uinew);
+                        pack();
                     } else if (xcur > 100 && xcur < 300 && ycur > 150 && ycur  <200) {
-                        System.out.println("select medium bot");
-
+                        GridUI uinew = new GridUI("MEDIUM");
+                        add(uinew);
+                        pack();
                     } else if (xcur > 100 && xcur < 300 && ycur > 250 && ycur < 300) {
-                        System.out.println("select hard bot");
-
+                        GridUI uinew = new GridUI("HARD");
+                        add(uinew);
+                        pack();
                     }
                     repaint();
                 }

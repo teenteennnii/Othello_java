@@ -9,6 +9,10 @@ public class Cell {
         this.discColor = 'B';
     }
 
+    public void makeEmpty() {
+        this.discColor = ' ';
+    }
+
     public char getDiscColor() {
         return discColor;
     }

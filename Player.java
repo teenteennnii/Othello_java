@@ -21,11 +21,9 @@ public class Player {
         return ' ';
     }
 
-    public boolean makeMove(Board board, int row, int col) {
+    public void makeMove(Board board, int row, int col) {
         if (board.isValidMove(row, col, color)) {
             board.addDisc(row, col, color);
-            return true;
         }
-        return false;
     }
 }

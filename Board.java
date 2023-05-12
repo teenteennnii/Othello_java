@@ -306,5 +306,13 @@ public class Board{
         return "Draw!";
     }
 
+    public void removeAllDisc() {
+        for(int row = 0; row < size; row++) {
+            for(int col = 0; col < size; col++) {
+                cells[row][col].makeEmpty();
+            }
+        }
+    }
+
 }
 

@@ -29,8 +29,9 @@ public class BotPlayer extends Player {
             int row = random.nextInt(size);
             int col = random.nextInt(size);
 
-            if (board.isValidMove(row, col, getColor())) {
-                board.flipDisc(row, col, getColor());
+            if (board.isValidMove(row, col, this.getColor())) {
+                board.addDisc(row, col, this.getColor());
+                board.flipDisc(row, col, this.getColor());
                 break;
             }
         }
@@ -56,6 +57,7 @@ public class BotPlayer extends Player {
         }
 
         if (bestRow != -1 && bestCol != -1) {
+            board.addDisc(bestRow, bestCol, this.getColor());
             board.flipDisc(bestRow, bestCol, getColor());
         }
     }
