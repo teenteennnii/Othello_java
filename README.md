@@ -36,11 +36,11 @@ This is a console-based implementation of the classic Othello (Reversi) game. Th
 3. Open a terminal or command-line interface and navigate to the project directory.
 4. Compile the Java source files using the following command:
     ```
-    javac Game.java
+    javac Main.java
     ```
 5. Run the game using the following command:
     ```
-    java Game
+    java Main.java
     ```
 6. Enjoy the game.
 
