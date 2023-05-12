@@ -2,6 +2,7 @@ import java.util.Random;
 
 public class BotPlayer extends Player {
     private String difficulty;
+    private int i = 0;
 
     public BotPlayer(char color, String difficulty) {
         super(color);
@@ -14,10 +15,11 @@ public class BotPlayer extends Player {
                 makeRandomMove(board);
                 break;
             case "MEDIUM":
+                makeMediumMove(board);
+                break;
+            case "HARD":
                 makeBestMove(board);
                 break;
-            // Add more cases for other difficulty levels if needed
-
         }
     }
 
@@ -35,6 +37,16 @@ public class BotPlayer extends Player {
                 break;
             }
         }
+    }
+
+    private void makeMediumMove(Board board) {
+        if (i % 2 == 0) {
+            makeBestMove(board);
+        }
+        else {
+            makeRandomMove(board);
+        }
+        i++;
     }
 
     private void makeBestMove(Board board) {

@@ -80,8 +80,9 @@ public class Game extends JFrame {
                         playWithBot(row, col, "EASY");
                     } else if (mode.equals("MEDIUM")) {
                         playWithBot(row, col, "MEDIUM");
+                    } else if (mode.equals("HARD")); {
+                        playWithBot(row, col, "HARD");
                     }
-
                 }
             });
         }
